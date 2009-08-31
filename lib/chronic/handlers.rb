@@ -28,6 +28,7 @@ module Chronic
                  Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
                  Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
                  Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
+                 Handler.new([:ordinal_day, :separator_of?, :repeater_month_name, :separator_at?, 'time?'], :handle_od_rmn),
                  Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
                  Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
                  Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
@@ -162,6 +163,10 @@ module Chronic
     
     def handle_rmn_od(tokens, options) #:nodoc:
       handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
+    end
+
+    def handle_od_rmn(tokens, options) #:nodoc:
+      handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[0].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
     end
 
     def handle_rmn_od_on(tokens, options) #:nodoc:

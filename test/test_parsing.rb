@@ -55,6 +55,23 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("may 27th at 5", :ambiguous_time_range => :none)
     assert_equal Time.local(2007, 5, 27, 5), time
     
+    # od_of_rm
+    
+    time = parse_now("27th of may")
+    assert_equal Time.local(2007, 5, 27, 12), time
+    
+    time = parse_now("27th of may", :context => :past)
+    assert_equal Time.local(2006, 5, 27, 12), time
+    
+    time = parse_now("27th of may 5:00 pm", :context => :past)
+    assert_equal Time.local(2006, 5, 27, 17), time
+    
+    time = parse_now("27th of may at 5pm", :context => :past)
+    assert_equal Time.local(2006, 5, 27, 17), time
+    
+    time = parse_now("27th of may at 5", :ambiguous_time_range => :none)
+    assert_equal Time.local(2007, 5, 27, 5), time
+    
     # rm_od_on
     
     time = parse_now("5:00 pm may 27th", :context => :past)

@@ -8,6 +8,7 @@ module Chronic
         if t = self.scan_for_at(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_in(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_on(tokens[i]) then tokens[i].tag(t); next end
+        if t = self.scan_for_of(tokens[i]) then tokens[i].tag(t); next end
       end
       tokens
     end
@@ -33,6 +34,14 @@ module Chronic
       scanner = {/^(at|@)$/ => :at}
       scanner.keys.each do |scanner_item|
         return SeparatorAt.new(scanner[scanner_item]) if scanner_item =~ token.word
+      end
+      return nil
+    end
+    
+    def self.scan_for_of(token)
+      scanner = {/^of$/ => :of}
+      scanner.keys.each do |scanner_item|
+        return SeparatorOf.new(scanner[scanner_item]) if scanner_item =~ token.word
       end
       return nil
     end
@@ -85,6 +94,12 @@ module Chronic
   class SeparatorOn < Separator #:nodoc:
     def to_s
       super << '-on'
+    end
+  end
+
+  class SeparatorOf < Separator #:nodoc:
+    def to_s
+      super << '-of'
     end
   end
 
