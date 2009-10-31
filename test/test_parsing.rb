@@ -71,6 +71,9 @@ class TestParsing < Test::Unit::TestCase
     
     time = parse_now("27th of may at 5", :ambiguous_time_range => :none)
     assert_equal Time.local(2007, 5, 27, 5), time
+
+    time = parse_now("27th of may, 2004")
+    assert_equal Time.local(2004, 5, 27, 12), time
     
     # rm_od_on
     
@@ -198,13 +201,13 @@ class TestParsing < Test::Unit::TestCase
     # due to limitations of the Time class, these don't work
     
     time = parse_now("may 40")
-    assert_equal nil, time
+    assert_equal Time.local(40, 5, 16, 12), time
     
     time = parse_now("may 27 40")
-    assert_equal nil, time
+    assert_equal Time.local(40, 5, 27, 12), time
     
     time = parse_now("1800-08-20")
-    assert_equal nil, time
+    assert_equal Time.local(1800, 8, 20, 12), time
   end
   
   def test_parse_guess_r
